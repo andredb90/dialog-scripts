@@ -249,10 +249,10 @@ dialogCheck
 
 # set progress total to the number of apps in the list
 if [[ $ms365 == "yes" ]]; then
-progress_total=${#apps[@]}
-progress_total=$(($progress_total+1))
+   progress_total=${#apps[@]}
+   progress_total=$(($progress_total+1))
 else
-progress_total=${#apps[@]}
+   progress_total=${#apps[@]}
 fi
 
 
