@@ -2,7 +2,7 @@
 
 #
 # Complete script meant for running via FileWave as early in the enrollment process as possible. This will download
-# and install Dialog on the fly before opening Dialog. Tested with FileWave 14.7.2
+# and install Dialog on the fly before opening Dialog.
 # 
 # The logging to /var/tmp/deploy.log is useful when getting started but
 # arguably is not needed.
@@ -57,7 +57,7 @@ function dialog_command(){
 }
 
 function finalise(){
-    dialog_command "icon: "SF=gear.badge.checkmark,palette=green,auto""
+   	dialog_command "icon: "SF=gear.badge.checkmark,palette=green,auto""
 	dialog_command "progresstext: Setup complete."
 	dialog_command "button1text: Done"
 	dialog_command "button1: enable"
@@ -67,17 +67,17 @@ function finalise(){
 }
 
 function filewave_dialog {
-	tail -1 -f $filewave_log | while read line
-	do
-		case "$line" in
-			*"Downloading Fileset"*|*"Done activating"*|*"Activate all"*)
-			echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'"" >> $dialog_command_file
-			;;
-			*"Setup complete"*)
-			exit 0
-			;;
-		esac 
-	done
+tail -1 -f $filewave_log | while read line
+do
+	case "$line" in
+		*"Downloading Fileset"*|*"Done activating"*|*"Activate all"*)
+		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'"" >> $dialog_command_file
+		;;
+		*"Setup complete"*)
+		exit 0
+		;;
+	esac 
+done
 }
 
 function appCheck(){
@@ -283,23 +283,23 @@ done
 # final command to execute
 
 if [[ $ms365 == "yes" ]]; then
-    echo "Installing Microsoft Office 365 Suite"
-    dialogCMD="$dialogCMD --listitem 'Microsoft Office 365' $listitems"
-    echo "$dialogCMD"
-	eval "$dialogCMD" &
-	sleep 2
-    MS365Install
+   echo "Installing Microsoft Office 365 Suite"
+   dialogCMD="$dialogCMD --listitem 'Microsoft Office 365' $listitems"
+   echo "$dialogCMD"
+   eval "$dialogCMD" &
+   sleep 2
+   MS365Install
 else
-dialogCMD="$dialogCMD $listitems"
-echo "$dialogCMD"
-eval "$dialogCMD" &
-sleep 2
+   dialogCMD="$dialogCMD $listitems"
+   echo "$dialogCMD"
+   eval "$dialogCMD" &
+   sleep 2
 fi
 
 
 if [[ $filewave == "yes" ]]; then
-    echo "Start reading FileWave Client log..."
-    filewave_dialog & 
+   echo "Start reading FileWave Client log..."
+   filewave_dialog & 
 fi
 
 sleep 2
