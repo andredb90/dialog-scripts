@@ -80,6 +80,28 @@ do
 done
 }
 
+function filewave_dialog_list {
+
+tail -1 -f $filewave_log | while read line               
+do
+	case "$line" in
+		*"Downloading Fileset"*|*"Done activating"*|*"Activate all"*)
+		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'"" >> $dialog_command_file
+		;;
+		*"Running Installer"*)
+		echo "listitem: add, title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), statustext: Installing..., status: wait" >> $dialog_command_file
+		until grep "$( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ).pkg. Result" "$filewave_log" ; do
+		sleep 1
+		done
+		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: success" >> $dialog_command_file
+		;;
+		*"Setup complete"*)
+		exit 0
+		;;
+	esac
+done
+}
+
 function appCheck(){
 currentapp=$(echo "$app" | cut -d ',' -f1)
 dialog_command "listitem: title: $currentapp, status: wait"
@@ -218,6 +240,8 @@ while test $# -gt 0 ; do
     case "$1" in
         --filewave) filewave="yes"
             ;;
+        --filewave-list) filewavelist="yes"
+            ;;
         --ms365) ms365="yes"
             ;;
     esac
@@ -296,10 +320,14 @@ else
    sleep 2
 fi
 
-
 if [[ $filewave == "yes" ]]; then
    echo "Start reading FileWave Client log..."
    filewave_dialog & 
+fi
+
+if [[ $filewavelist == "yes" ]]; then
+   echo "Start reading FileWave Client log..."
+   filewave_dialog_list & 
 fi
 
 sleep 2
