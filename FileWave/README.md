@@ -25,6 +25,9 @@ Use `--filewave` argument to display information during FileSet deployments.
 
 <img width="932" alt="Screenshot 2022-08-07 at 20 51 53" src="https://user-images.githubusercontent.com/8020217/183306615-fd162e92-e668-4320-ba44-5f86fb58a9e7.png">
 
-Use filewave-progress in combination with filewave-dialog-progress.sh to automatically show downlading progress and add installer packages to the list.
-<img width="598" alt="Screenshot 2022-08-09 at 14 46 49" src="https://user-images.githubusercontent.com/8020217/183650531-a6aec423-9605-47cb-81b1-6cf54d62ed21.png">
+
+Use `--filewave-progress in combination with filewave-dialog-progress.sh to automatically show downlading progress and add installer packages to the list.
+
+
+https://user-images.githubusercontent.com/8020217/183651789-1ab0f410-17cc-41b1-a07f-8a46926158e6.mov
 
