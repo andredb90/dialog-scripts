@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#
+# v1.1
 # Complete script meant for running via FileWave as early in the enrollment process as possible. This will download
 # and install Dialog on the fly before opening Dialog.
 # 
@@ -31,8 +31,8 @@ apps=(
 linkID="2009112"
 url="https://go.microsoft.com/fwlink/?linkid=$linkID"
 # serializerURL="https://qwerty.domain.net/OfficeForMac/Microsoft_Office_LTSC_2021_VL_Serializer.pkg" # Replace with the URL to your serializer PKG, Comment line 6-8 if you're not serializing
-# UNAME=abc # Replace with the username, if needed, to curl your PKG. Comment line 6-8 if you're not serializing
-# PWORD=xyz # Replace with the password, if needed, to curl your PKG. Comment line 6-8 if you're not serializing
+# UNAME=abc # Replace with the username, if needed, to curl your PKG. Comment line 33-35 if you're not serializing
+# PWORD=xyz # Replace with the password, if needed, to curl your PKG. Comment line 33-35 if you're not serializing
 expectedTeamID="UBF8T346G9" # '/usr/sbin/spctl -a -vv -t install package.pkg' to get the expected Team ID
 workDirectory=$( /usr/bin/basename "$0" )
 tempDirectory=$( /usr/bin/mktemp -d "/private/tmp/$workDirectory.XXXXXX" )
