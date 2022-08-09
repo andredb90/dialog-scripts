@@ -3,7 +3,7 @@
 - [swiftDialog](https://github.com/bartreardon/swiftDialog) Script with FileWave integration
 - Download, install and configuration
 - Use `--filewave` to parse fwcld.log and provide useful information during deployment
-- Use `filewave-list` to automatically add installer packages to the list while still showing progress information.
+- Use `--filewave-list` to automatically add installer packages to the list while still showing progress information.
 - Use `--ms365` to install the latest version of Microsoft Office 365 Apps directly from Microsoft. 
 
 Please be aware that FileWave environments and deployment strategies can be very different. What works for me doesn't necessarily work for you.
@@ -26,7 +26,7 @@ Use `--filewave` argument to display information during FileSet deployments.
 
 <img width="932" alt="Screenshot 2022-08-07 at 20 51 53" src="https://user-images.githubusercontent.com/8020217/183306615-fd162e92-e668-4320-ba44-5f86fb58a9e7.png">
 
-Use `--filewave-list` to show when packages are being installed and add them to the app list.
+Use `--filewave-list` argument to show when packages are being installed and add them to the app list.
 As of now, the progress bar will not recalculate the steps when more listitems are added. This should be possible with dialog v2.0.
 
 <img width="932" alt="Screenshot 2022-08-09 at 15 03 55" src="https://user-images.githubusercontent.com/8020217/183655405-3d555952-e8d4-42d1-af01-6052bbe499a7.png">
