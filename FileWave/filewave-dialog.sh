@@ -94,7 +94,7 @@ do
 		sleep 1
 		done
 		result="$(grep "$( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ).pkg. Result" "$filewave_log" | tail -1)"
-		resultcode=$(echo "$result" | grep -Eo '[0-9]+$')
+		resultcode="$(echo "$result" | grep -Eo '[0-9]+$')"
 		if [[ $resultcode -eq 0 ]]; then
 		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: success" >> $dialog_command_file
 		else
