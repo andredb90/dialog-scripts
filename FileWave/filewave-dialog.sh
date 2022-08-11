@@ -89,16 +89,16 @@ do
 		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'""
 		;;
 		*"Running Installer"*)
-		echo "listitem: add, title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), statustext: Installing..., status: wait"
+		echo "listitem: add, title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), statustext: Installing..., status: wait" >> $dialog_command_file
 		until grep "$( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ).pkg. Result" "$filewave_log" ; do
 		sleep 1
 		done
 		result="$(grep "$( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ).pkg. Result" "$filewave_log" | tail -1)"
 		resultcode=$(echo "$result" | grep -Eo '[0-9]+$')
 		if [[ $resultcode -eq 0 ]]; then
-		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: success"
+		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: success" >> $dialog_command_file
 		else
-		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: error, statustext: Error $resultcode"
+		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: error, statustext: Error $resultcode" >> $dialog_command_file
 		fi
 		;;
 		*"Setup complete"*)
