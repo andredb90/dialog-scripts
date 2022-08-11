@@ -86,7 +86,7 @@ tail -1 -f $filewave_log | while read line
 do
 	case "$line" in
 		*"Downloading Fileset"*|*"Done activating"*|*"Activate all"*)
-		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'""
+		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'"" >> $dialog_command_file
 		;;
 		*"Running Installer"*)
 		echo "listitem: add, title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), statustext: Installing..., status: wait" >> $dialog_command_file
