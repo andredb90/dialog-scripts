@@ -10,7 +10,7 @@
 # Display a Dialog with a list of applications and indicate when they've been installed
 # Reads the FileWave log and updates the Dialog progress text with relevant info
 # 
-# Requires Dialog v1.9.1 or later https://github.com/bartreardon/swiftDialog/
+# Requires Dialog v1.11.2 or later https://github.com/bartreardon/swiftDialog/
 
 # *** begin definable variables
 
