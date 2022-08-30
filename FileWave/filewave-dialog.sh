@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#
+# v1.1
 # Complete script meant for running via FileWave as early in the enrollment process as possible. This will download
 # and install Dialog on the fly before opening Dialog.
 # 
@@ -10,7 +10,7 @@
 # Display a Dialog with a list of applications and indicate when they've been installed
 # Reads the FileWave log and updates the Dialog progress text with relevant info
 # 
-# Requires Dialog v1.9.1 or later https://github.com/bartreardon/swiftDialog/
+# Requires Dialog v1.11.2 or later https://github.com/bartreardon/swiftDialog/
 
 # *** begin definable variables
 
@@ -31,8 +31,8 @@ apps=(
 linkID="2009112"
 url="https://go.microsoft.com/fwlink/?linkid=$linkID"
 # serializerURL="https://qwerty.domain.net/OfficeForMac/Microsoft_Office_LTSC_2021_VL_Serializer.pkg" # Replace with the URL to your serializer PKG, Comment line 6-8 if you're not serializing
-# UNAME=abc # Replace with the username, if needed, to curl your PKG. Comment line 6-8 if you're not serializing
-# PWORD=xyz # Replace with the password, if needed, to curl your PKG. Comment line 6-8 if you're not serializing
+# UNAME=abc # Replace with the username, if needed, to curl your PKG. Comment line 33-35 if you're not serializing
+# PWORD=xyz # Replace with the password, if needed, to curl your PKG. Comment line 33-35 if you're not serializing
 expectedTeamID="UBF8T346G9" # '/usr/sbin/spctl -a -vv -t install package.pkg' to get the expected Team ID
 workDirectory=$( /usr/bin/basename "$0" )
 tempDirectory=$( /usr/bin/mktemp -d "/private/tmp/$workDirectory.XXXXXX" )
@@ -42,6 +42,7 @@ tempDirectory=$( /usr/bin/mktemp -d "/private/tmp/$workDirectory.XXXXXX" )
 title="Setting up your Mac"
 message="Please wait while we download and install apps"
 icon="SF=gear"
+icon_pkg="/System/Library/CoreServices/Installer.app/Contents/Resources/package.icns"
 # location of dialog, dialog command file and FileWave log
 dialogApp="/usr/local/bin/dialog"
 dialog_command_file="/var/tmp/dialog.log"
@@ -89,13 +90,23 @@ do
 		echo "progresstext: "${line##*|} | awk -F "(,)+" '{print $1}'"" >> $dialog_command_file
 		;;
 		*"Running Installer"*)
-		echo "listitem: add, title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), statustext: Installing..., status: wait" >> $dialog_command_file
-		until grep "$( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ).pkg. Result" "$filewave_log" ; do
+		echo "listitem: add, title: $( echo ${line##*: } | awk -F "( from)+" '{print $1}' ), icon: "$icon_pkg", statustext: Installing..., status: wait" >> $dialog_command_file
+		until grep "$( echo ${line##*: } | awk -F "( from)+" '{print $1}' ). Result" "$filewave_log" ; do
 		sleep 1
 		done
-		echo "listitem: title: $( echo ${line##*: } | awk -F "(.pkg)+" '{print $1}' ), status: success" >> $dialog_command_file
+		result="$(grep "$( echo ${line##*: } | awk -F "( from)+" '{print $1}' ). Result" "$filewave_log" | tail -1)"
+		resultcode="$(echo "$result" | grep -Eo '[0-9]+$')"
+		if [[ $resultcode -eq 0 ]]; then
+		echo "listitem: title: $( echo ${line##*: } | awk -F "( from)+" '{print $1}' ), status: success, statustext: """ >> $dialog_command_file
+		else
+		echo "listitem: title: $( echo ${line##*: } | awk -F "( from)+" '{print $1}' ), status: fail, statustext: Error code $resultcode" >> $dialog_command_file
+		fi
 		;;
 		*"Setup complete"*)
+		sleep 2
+		if grep -q "Error code" "$dialog_command_file"; then
+  		echo "progresstext: Some packages could not be installed" >> $dialog_command_file
+		fi
 		exit 0
 		;;
 	esac
