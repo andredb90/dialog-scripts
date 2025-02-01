@@ -1,5 +1,10 @@
 # swiftDialog + FileWave
 
+**Not tested with current dialog version or macOS and not actively maintained**
+
+Leaving it here for inspirational purposes only.
+
+
 - [swiftDialog](https://github.com/bartreardon/swiftDialog) Script with FileWave integration
 - Download, install and configuration
 - Use `--filewave` to parse fwcld.log and provide useful information during deployment
